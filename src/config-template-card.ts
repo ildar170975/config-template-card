@@ -92,7 +92,7 @@ export class ConfigTemplateCard extends LitElement {
 
       if (oldHass) {
         for (const entity of this._evaluateConfig(this._config.entities)) {
-          if (Boolean(this.hass && oldHass.states[entity] !== this.hass.states[entity])) {
+          if (this.hass && oldHass.states[entity] !== this.hass.states[entity]) {
             return true;
           }
         }
