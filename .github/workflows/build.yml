@@ -20,5 +20,5 @@ jobs:
           npm run build
       - uses: actions/upload-artifact@v4
         with:
-          name: restriction-card.js
-          path: dist/restriction-card.js
+          name: config-template-card.js
+          path: dist/config-template-card.js
