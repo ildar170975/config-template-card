@@ -135,6 +135,29 @@ entities:
   - entity: light.bed_light
 ```
 
+### Markdown card example
+
+```yaml
+type: custom:config-template-card
+entities:
+  - sensor.outside_temperature
+  - sensor.time
+  - weather.home
+variables:
+  weather: |
+    () => {
+        let hass = document.querySelector("home-assistant").hass;
+        let w = states['weather.home'].state;
+        let key = 'component.weather.state._.' + w;
+        return hass.resources[hass.language][key];
+      }
+  card:
+    type: markdown
+    content: |
+      ### {{ states('sensor.outside_temperature') }} °C - ${weather()}
+      # {{ states('sensor.time') }}
+```
+
 ## Defining global functions in variables
 
 If you find yourself having to rewrite the same logic in multiple locations, you can define global methods inside Config Template Card's variables, which can be called anywhere within the scope of the card:
@@ -143,14 +166,14 @@ If you find yourself having to rewrite the same logic in multiple locations, you
 type: 'custom:config-template-card'
   variables:
     setTempMessage: |
-      temp => {
+      (prefix, temp) => {
         if (temp <= 19) {
-            return 'Quick, get a blanket!';
+            return prefix + 'Quick, get a blanket!';
         }
         else if (temp >= 20 && temp <= 22) {
-          return 'Cozy!';
+          return prefix + 'Cozy!';
         }
-        return 'It's getting hot in here...';
+        return prefix + 'It's getting hot in here...';
       }
     currentTemp: states['climate.ecobee'].attributes.current_temperature
   entities:
@@ -159,7 +182,7 @@ type: 'custom:config-template-card'
     type: entities
     entities:
       - entity: climate.ecobee
-        name: '${ setTempMessage(currentTemp) }'
+        name: '${ setTempMessage("House: ", currentTemp) }'
 ````
 
 ## Dashboard wide variables
