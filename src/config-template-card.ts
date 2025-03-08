@@ -111,6 +111,7 @@ export class ConfigTemplateCard extends LitElement {
         return computeCardSize(element);
       }
     }
+    console.log('computeCardSize failed');
     return 1;
   }
 
